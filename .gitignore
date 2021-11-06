@@ -1,0 +1,6 @@
+.terraform
+.terraform.lock*
+terraform.*
+env.tfvars
+plan.out
+key.pem
