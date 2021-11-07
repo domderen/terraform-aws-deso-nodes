@@ -18,9 +18,14 @@ locals {
 
   user_data = <<-EOT
   #!/bin/bash
-  
+
   echo "Creating directory for deso."
   mkdir /deso-node
+
+  echo "Downloading, installing & running CW agent."
+  wget https://gist.githubusercontent.com/domderen/787925f0417369c69d8a45ba6eb61cb7/raw/edc324bd997781fcae92ccb91c53c34826886e93/install_and_run_cw_agent.sh -O /deso-node/install_and_run_cw_agent.sh
+  chmod +x /deso-node/install_and_run_cw_agent.sh
+  /deso-node/install_and_run_cw_agent.sh
 
   echo "Starting DeSo node initalization."
   INSTANCE_ID="`wget -q -O - http://instance-data/latest/meta-data/instance-id`"
