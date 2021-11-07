@@ -55,3 +55,10 @@ jobs:
     - name: Test
       working-directory: ./test
       run: go test -v -timeout 30m
+
+    - name: Render terraform docs inside the USAGE.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v0.11.0
+      with:
+        config-file: .terraform-docs.yml
+        working-dir: ".,./examples/complete"
+        git-push: "true"
