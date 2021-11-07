@@ -24,6 +24,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.0.5
+        terraform_wrapper: false
 
     - name: Run a Terraform init & validate
       working-directory: ./examples/complete
