@@ -61,5 +61,12 @@ jobs:
       uses: terraform-docs/gh-actions@v0.11.0
       with:
         config-file: .terraform-docs.yml
-        working-dir: ".,./examples/complete"
+        working-dir: "."
+        git-push: "true"
+
+    - name: Render terraform docs and push changes back to PR branch in example
+      uses: terraform-docs/gh-actions@v0.11.0
+      with:
+        config-file: ./examples/complete/.terraform-docs.yml
+        working-dir: "./examples/complete"
         git-push: "true"
