@@ -78,7 +78,7 @@ func TestTerraformCompleteExample(t *testing.T) {
 		&tlsConfig,
 		60,
 		5*time.Second,
-		verifyDesoFrontend,
+		verifyDesoBackend,
 	)
 }
 
