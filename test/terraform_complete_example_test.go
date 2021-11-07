@@ -57,21 +57,39 @@ func TestTerraformCompleteExample(t *testing.T) {
 	// Setup a TLS configuration to submit with the helper, a blank struct is acceptable
 	tlsConfig := tls.Config{}
 
-	// Make an HTTP request to the instance and make sure that it responds with a 200 status code.
-	url := fmt.Sprintf("https://%s/", desoDns)
+	// Make an HTTP request to the frontend service and make sure that it responds correctly.
+	frontendUrl := fmt.Sprintf("https://%s/", desoDns)
 	http_helper.HttpGetWithRetryWithCustomValidation(
 		t,
-		url,
+		frontendUrl,
 		&tlsConfig,
 		60,
 		5*time.Second,
-		verifyDesoMainPage,
+		verifyDesoFrontend,
+	)
+
+	// Make an HTTP request to the backend service and make sure that it responds correctly.
+	backendUrl := fmt.Sprintf("https://%s/api/v0/get-exchange-rate", desoDns)
+	http_helper.HttpGetWithRetryWithCustomValidation(
+		t,
+		backendUrl,
+		&tlsConfig,
+		60,
+		5*time.Second,
+		verifyDesoFrontend,
 	)
 }
 
-func verifyDesoMainPage(statusCode int, body string) bool {
+func verifyDesoFrontend(statusCode int, body string) bool {
 	if statusCode != 200 {
 		return false
 	}
 	return strings.Contains(body, "Welcome to DeSo")
+}
+
+func verifyDesoBackend(statusCode int, body string) bool {
+	if statusCode != 200 {
+		return false
+	}
+	return strings.Contains(body, "SatoshisPerDeSoExchangeRate")
 }
