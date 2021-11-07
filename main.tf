@@ -14,6 +14,8 @@ locals {
   startup_lifecycle_hook_name     = "startup"
   termination_lifecycle_hook_name = "termination"
 
+  deso_frontend_healthcheck_port = 8081
+
   user_data = <<-EOT
   #!/bin/bash
   
@@ -99,6 +101,10 @@ locals {
           pay.testwyre.com
           pay.sendwyre.com
           https://iframe.videodelivery.net;"
+  }
+
+  :${local.deso_frontend_healthcheck_port} {
+    respond /health-check 200
   }
   EOL
 
@@ -400,12 +406,14 @@ locals {
       image: ${var.deso_frontend_docker_image}
       ports:
       - ${var.deso_frontend_port}:${var.deso_frontend_port}
+      - ${local.deso_frontend_healthcheck_port}:${local.deso_frontend_healthcheck_port}
       volumes:
       - ./:/app
       env_file:
       - dev.env
       expose:
       - "${var.deso_frontend_port}"
+      - "${local.deso_frontend_healthcheck_port}"
   volumes:
     db:
   EOL

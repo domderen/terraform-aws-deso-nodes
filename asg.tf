@@ -4,7 +4,7 @@ module "asg_sg" {
   version = "~> 4.0"
 
   name        = var.name
-  description = "A security group that allows load balancer HTTPS endpoint to access this DeSo node on port var.deso_frontend_port & var.deso_backend_port. It also allows SSH connection on port 22 from an IP address of the executor of this terraform module."
+  description = "A security group that exposes DeSo Docker Compose deployment ports to ALB."
   vpc_id      = var.aws_vpc_id
 
   computed_ingress_with_source_security_group_id = [
@@ -13,6 +13,13 @@ module "asg_sg" {
       to_port                  = var.deso_frontend_port
       protocol                 = 6
       description              = "http-${var.deso_frontend_port}-tcp"
+      source_security_group_id = module.alb_https_sg.security_group_id
+    },
+    {
+      from_port                = local.deso_frontend_healthcheck_port
+      to_port                  = local.deso_frontend_healthcheck_port
+      protocol                 = 6
+      description              = "http-${local.deso_frontend_healthcheck_port}-tcp"
       source_security_group_id = module.alb_https_sg.security_group_id
     },
     {

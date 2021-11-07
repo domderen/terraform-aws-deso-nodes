@@ -117,6 +117,17 @@ module "alb" {
       backend_port         = var.deso_frontend_port
       target_type          = "instance"
       deregistration_delay = 30
+      health_check = {
+        enabled             = true
+        interval            = 30
+        path                = "/health-check"
+        port                = local.deso_frontend_healthcheck_port
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
+        protocol            = "HTTP"
+        matcher             = "200"
+      }
     }
   ]
 

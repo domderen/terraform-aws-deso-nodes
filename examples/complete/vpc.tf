@@ -2,7 +2,7 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = local.name
+  name = var.name
   cidr = "10.99.0.0/18"
 
   azs             = ["${local.aws_region}a", "${local.aws_region}b", "${local.aws_region}c"]

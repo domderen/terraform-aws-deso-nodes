@@ -1,6 +1,7 @@
 .terraform
 .terraform.lock*
-terraform.*
+test-terraform.tfstate*
+terraform.tfstate*
 env.tfvars
 plan.out
 key.pem

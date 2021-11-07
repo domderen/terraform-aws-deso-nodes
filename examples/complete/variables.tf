@@ -1,3 +1,9 @@
+variable "name" {
+  type        = string
+  description = "Name under which DeSo Nodes will be deployed. This will also be a beginning of a URL under which DeSo will be deployed. DeSo nodes will be exposed at https://$(var.name).$(var.deso_public_hosted_zone)."
+  default     = "deso-nodes"
+}
+
 variable "deso_public_hosted_zone" {
   type        = string
   description = "AWS Route53 hosted zone name at which DeSo DNS endpoints will be added. DeSo nodes will be exposed at https://$(var.name).$(var.deso_public_hosted_zone)/."

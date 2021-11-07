@@ -1,4 +1,8 @@
 terraform {
+  backend "local" {
+    path = "terraform.tfstate"
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -17,14 +21,13 @@ data "http" "ip" {
 }
 
 locals {
-  name       = "deso-complete"
   aws_region = "us-east-1"
 }
 
 module "deso_nodes" {
   source = "../../"
 
-  name = local.name
+  name = var.name
 
   # Allow SSH access to IP from which this terraform module is executed.
   ssh_access_ip_address = data.http.ip.body
@@ -39,7 +42,7 @@ module "deso_nodes" {
   desired_nodes_count = 1
   # Tags that will be added to AWS resources.
   tags = {
-    Project          = local.name
+    Project          = var.name
     TerraformManaged = "true"
   }
 

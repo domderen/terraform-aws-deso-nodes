@@ -1,6 +1,6 @@
 # Complete Example
 
-An example presenting how to deploy DeSo Blockchain. This application will be available at https://${local.name}.${var.deso_public_hosted_zone}/ after deployment.
+An example presenting how to deploy DeSo Blockchain. This application will be available at https://${var.name}.${var.deso_public_hosted_zone}/ after deployment.
 
 This example assumes that you have an existing Route53 Hosted Zone which name you provide as `var.deso_public_hosted_zone`.
 
@@ -23,6 +23,10 @@ ssh -i key.pem ec2-user@${DESO_NODE_PUBLIC_IP}
 
 ```hcl
 terraform {
+  backend "local" {
+    path = "terraform.tfstate"
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -41,14 +45,13 @@ data "http" "ip" {
 }
 
 locals {
-  name       = "deso-complete"
   aws_region = "us-east-1"
 }
 
 module "deso_nodes" {
   source = "../../"
 
-  name = local.name
+  name = var.name
 
   # Allow SSH access to IP from which this terraform module is executed.
   ssh_access_ip_address = data.http.ip.body
@@ -63,7 +66,7 @@ module "deso_nodes" {
   desired_nodes_count = 1
   # Tags that will be added to AWS resources.
   tags = {
-    Project          = local.name
+    Project          = var.name
     TerraformManaged = "true"
   }
 
@@ -90,6 +93,7 @@ module "deso_nodes" {
 | <a name="input_admin_public_keys"></a> [admin\_public\_keys](#input\_admin\_public\_keys) | DeSo ADMIN\_PUBLIC\_KEYS env var. | `string` | `""` | no |
 | <a name="input_deso_public_hosted_zone"></a> [deso\_public\_hosted\_zone](#input\_deso\_public\_hosted\_zone) | AWS Route53 hosted zone name at which DeSo DNS endpoints will be added. DeSo nodes will be exposed at https://$(var.name).$(var.deso_public_hosted_zone)/. | `string` | n/a | yes |
 | <a name="input_miner_public_keys"></a> [miner\_public\_keys](#input\_miner\_public\_keys) | DeSo MINER\_PUBLIC\_KEYS env var. | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name under which DeSo Nodes will be deployed. This will also be a beginning of a URL under which DeSo will be deployed. DeSo nodes will be exposed at https://$(var.name).$(var.deso_public_hosted_zone). | `string` | `"deso-nodes"` | no |
 | <a name="input_super_admin_public_keys"></a> [super\_admin\_public\_keys](#input\_super\_admin\_public\_keys) | DeSo SUPER\_ADMIN\_PUBLIC\_KEYS env var. | `string` | `""` | no |
 | <a name="input_support_email"></a> [support\_email](#input\_support\_email) | DeSo SUPPORT\_EMAIL env var. | `string` | n/a | yes |
 | <a name="input_twilio_account_sid"></a> [twilio\_account\_sid](#input\_twilio\_account\_sid) | DeSo TWILIO\_ACCOUNT\_SID env var. | `string` | `""` | no |
