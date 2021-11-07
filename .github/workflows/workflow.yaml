@@ -65,11 +65,17 @@ jobs:
       with:
         config-file: .terraform-docs.yml
         working-dir: "."
-        git-push: true
+        git-push: false
 
     - name: Render terraform docs and push changes back to PR branch in example
       uses: terraform-docs/gh-actions@v0.11.0
       with:
         config-file: ./examples/complete/.terraform-docs.yml
         working-dir: "./examples/complete"
-        git-push: true
+        git-push: false
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
