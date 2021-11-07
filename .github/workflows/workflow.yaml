@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   validate:
     name: Validate
@@ -55,9 +59,9 @@ jobs:
         role-to-assume: arn:aws:iam::711446528666:role/github-actions-oidc-provider-Role-1I33NTY818Y6U
         aws-region: us-east-1
 
-    - name: Test
-      working-directory: ./test
-      run: go test -v -timeout 30m
+    # - name: Test
+    #   working-directory: ./test
+    #   run: go test -v -timeout 30m
 
     - name: Render terraform docs and push changes back to PR branch
       uses: terraform-docs/gh-actions@v0.11.0
