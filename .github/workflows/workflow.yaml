@@ -40,7 +40,7 @@ jobs:
         fi
 
     - name: Configure AWS credentials from github
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@master
       with:
         role-to-assume: arn:aws:iam::711446528666:role/github-actions-oidc-provider-Role-1I33NTY818Y6U
         aws-region: us-east-1
