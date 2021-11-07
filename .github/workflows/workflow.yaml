@@ -65,8 +65,6 @@ jobs:
         config-file: .terraform-docs.yml
         working-dir: "."
         git-push: true
-        git-push-sign-off: true
-        git-push-user-email: dominik.deren@live.com
 
     - name: Render terraform docs and push changes back to PR branch in example
       uses: terraform-docs/gh-actions@v0.11.0
@@ -74,5 +72,3 @@ jobs:
         config-file: ./examples/complete/.terraform-docs.yml
         working-dir: "./examples/complete"
         git-push: true
-        git-push-sign-off: true
-        git-push-user-email: dominik.deren@live.com
