@@ -25,10 +25,6 @@ func TestTerraformCompleteExample(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: "../examples/complete",
 
-		BackendConfig: map[string]interface{}{
-			"path": "test-terraform.tfstate",
-		},
-
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
 			"name":                    name,
